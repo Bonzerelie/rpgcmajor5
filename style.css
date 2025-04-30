@@ -80,7 +80,7 @@ body {
 .blue-button {
   flex: 1 1 auto;
   max-width: 50px;
-  min-width: 35px;
+  min-width: 40px;
   min-height: 50px;
   padding: 6px;
   box-sizing: border-box;
