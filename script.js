@@ -12,12 +12,15 @@ const correctCount = document.getElementById('correct-count');
 const incorrectCount = document.getElementById('incorrect-count');
 const totalCount = document.getElementById('total-count');
 const accuracyDisplay = document.getElementById('accuracy');
+const scaleLabel = document.getElementById('scale-label');
+const octaveLabel = document.getElementById('octave-label');
 
 let currentNote = '';
 let audio = new Audio();
 let correct = 0;
 let incorrect = 0;
 let isAnswered = false;
+let showDegrees = false;
 
 const noteMap = {
   'C': ['c4', 'c5'],
@@ -27,6 +30,16 @@ const noteMap = {
   'G': ['g4'],
   'A': ['a4'],
   'B': ['b4']
+};
+
+const degreeMap = {
+  'C': '1st',
+  'D': '2nd',
+  'E': '3rd',
+  'F': '4th',
+  'G': '5th',
+  'A': '6th',
+  'B': '7th'
 };
 
 const allNotes = Object.values(noteMap).flat();
@@ -47,6 +60,13 @@ function startGame() {
   startScreen.classList.add('hidden');
   gameScreen.classList.remove('hidden');
   loadNewNote();
+}
+
+function updateNoteButtonLabels() {
+  noteButtons.forEach(btn => {
+    const note = btn.getAttribute('data-note');
+    btn.textContent = showDegrees ? degreeMap[note] : note;
+  });
 }
 
 function loadNewNote() {
@@ -71,13 +91,17 @@ function handleAnswer(e) {
   if (selected === correctName) {
     correct++;
     e.target.classList.add('correct');
-    promptText.textContent = `Correct! ✅ The note was ${correctName}`;
+    promptText.textContent = showDegrees
+      ? `Correct! ✅ The note was the ${degreeMap[correctName]} scale degree`
+      : `Correct! ✅ The note was ${correctName}`;
   } else {
     incorrect++;
     e.target.classList.add('incorrect');
     const correctBtn = [...noteButtons].find(btn => btn.getAttribute('data-note') === correctName);
     if (correctBtn) correctBtn.classList.add('correct');
-    promptText.textContent = `Incorrect! ❌ The note played was actually ${correctName}`;
+    promptText.textContent = showDegrees
+      ? `Incorrect! ❌ The note was the ${degreeMap[correctName]} scale degree`
+      : `Incorrect! ❌ The note played was actually ${correctName}`;
   }
 
   updateScore();
@@ -99,9 +123,22 @@ function resetScore() {
   updateScore();
 }
 
+function toggleDisplay(mode) {
+  showDegrees = mode === 'degrees';
+  updateNoteButtonLabels();
+  displayNotesBtn.classList.toggle('selected', !showDegrees);
+  displayDegreesBtn.classList.toggle('selected', showDegrees);
+  scaleLabel.textContent = showDegrees ? 'Diatonic - Major Scale' : 'Diatonic - C Major Scale';
+  octaveLabel.textContent = showDegrees ? 'One Octave' : 'One Octave (C4–C5)';
+  playRefBtn.textContent = showDegrees ? 'Play Reference (Tonic)' : 'Play Reference (C - Tonic)';
+  promptText.textContent = 'Which note was played?';
+}
+
 startButton.addEventListener('click', startGame);
 playRefBtn.addEventListener('click', () => playNote('c4'));
 replayNoteBtn.addEventListener('click', () => playNote(currentNote));
 nextBtn.addEventListener('click', loadNewNote);
 resetScoreBtn.addEventListener('click', resetScore);
 noteButtons.forEach(btn => btn.addEventListener('click', handleAnswer));
+displayNotesBtn.addEventListener('click', () => toggleDisplay('notes'));
+displayDegreesBtn.addEventListener('click', () => toggleDisplay('degrees'));
