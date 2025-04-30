@@ -81,7 +81,8 @@ body {
   flex: 1 1 auto;
   max-width: 50px;
   min-width: 35px;
-  padding: 5px;
+  min-height: 50px;
+  padding: 6px;
   box-sizing: border-box;
 }
 
