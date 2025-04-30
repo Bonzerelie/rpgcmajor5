@@ -25,13 +25,13 @@ let isAnswered = false;
 let showDegrees = false;
 
 const noteMap = {
-  'C': ['c3', 'c4', 'c5', 'c6'],
-  'D': ['d3', 'd4', 'd5'],
-  'E': ['e3', 'e4', 'e5'],
-  'F': ['f3', 'f4', 'f5'],
-  'G': ['g3', 'g4', 'g5'],
-  'A': ['a3', 'a4', 'a5'],
-  'B': ['b3', 'b4', 'b5']
+  'C': ['c4', 'c5'],
+  'D': ['d4'],
+  'E': ['e4'],
+  'F': ['f4'],
+  'G': ['g4'],
+  'A': ['a4'],
+  'B': ['b4']
 };
 
 const degreeMap = {
